@@ -16,10 +16,24 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserService userService;
-    @GetMapping("/{email}")
-    public ResponseEntity<Optional<User>> getUser(@PathVariable String email){
+    //@GetMapping("/{email}")
+    //public ResponseEntity<Optional<User>> getUser(@PathVariable String email){
 
-        return new ResponseEntity<Optional<User>>(userService.getUser(email), HttpStatus.OK);
+      //  return new ResponseEntity<Optional<User>>(userService.getUser(email), HttpStatus.OK);
+    //}
+
+    @PostMapping("/retrieve")
+    public ResponseEntity<User> retrieveUser(@RequestBody User user) {
+        String email = user.getEmail(); // Assuming your User class has a getEmail() method
+        String password = user.getPassword();
+        User retrievedUser = userService.getUserByEmailAndPassword(email, password).orElse(null);
+
+        if (retrievedUser != null) {
+            return new ResponseEntity<>(retrievedUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
 }
 

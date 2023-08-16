@@ -12,7 +12,7 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    public Optional<User> getUser(String email){
-        return userRepository.getUserByEmail(email);
+    public Optional<User> getUserByEmailAndPassword(String email, String password){
+        return userRepository.getUserByEmailAndPassword(email,password);
     }
 }
