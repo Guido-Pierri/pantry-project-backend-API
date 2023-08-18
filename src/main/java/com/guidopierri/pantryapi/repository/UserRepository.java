@@ -10,4 +10,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends MongoRepository<User, ObjectId> {
     Optional<User> getUserByEmailAndPassword(String email,String password);
+    Optional<User> getUserByEmail(String email);
+
+    User save(User user);
 }
+

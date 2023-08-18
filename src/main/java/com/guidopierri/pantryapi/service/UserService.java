@@ -15,4 +15,11 @@ public class UserService {
     public Optional<User> getUserByEmailAndPassword(String email, String password){
         return userRepository.getUserByEmailAndPassword(email,password);
     }
+    public Optional<User> getUserByEmail(String email){
+        return userRepository.getUserByEmail(email);
+    }
+    public User createUser(String firstName, String lastName, String email, String password){
+        return userRepository.save(new User(firstName,lastName,email,password));
+
+    }
 }
