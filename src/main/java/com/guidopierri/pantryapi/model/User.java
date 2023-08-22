@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
+
+import java.util.List;
 
 @Document(collection = "users")
 @Data
@@ -18,6 +21,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
         private String lastName;
         private String email;
         private String password;
+    @DocumentReference
+    private List<Item> itemIds;
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
