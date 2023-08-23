@@ -33,11 +33,10 @@ public class UserController {
           User createdUser = userService.createUser(firstName, lastName, email, password);
           return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
       }
-    @PostMapping("/retrieve")
+    /*@PostMapping("/getUser")
     public ResponseEntity<User> retrieveUser(@RequestBody User user) {
         String email = user.getEmail(); // Assuming your User class has a getEmail() method
-        String password = user.getPassword();
-        User retrievedUser = userService.getUserByEmailAndPassword(email, password).orElse(null);
+        User retrievedUser = userService.getUserByEmail(email).orElse(null);
 
         if (retrievedUser != null) {
             return new ResponseEntity<>(retrievedUser, HttpStatus.OK);
@@ -45,7 +44,8 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @PostMapping("/getUser")
+    */
+        @PostMapping("/getUser")
     public ResponseEntity<List<Map<String, Object>>>getUser(@RequestBody User user) {
         String email = user.getEmail();
         String enteredPassword = user.getPassword(); // Password entered by the user
@@ -68,6 +68,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @PostMapping("/login")
     public ResponseEntity<List<Map<String, Object>>>loginUser(@RequestBody User user) {
         String email = user.getEmail();
