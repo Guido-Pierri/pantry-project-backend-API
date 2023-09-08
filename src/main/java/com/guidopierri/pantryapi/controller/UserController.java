@@ -2,6 +2,7 @@ package com.guidopierri.pantryapi.controller;
 
 import com.guidopierri.pantryapi.model.Item;
 import com.guidopierri.pantryapi.model.User;
+import com.guidopierri.pantryapi.model.UserDTO;
 import com.guidopierri.pantryapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,28 +47,24 @@ public class UserController {
     }
     */
         @PostMapping("/getUser")
-    public ResponseEntity<List<Map<String, Object>>>getUser(@RequestBody User user) {
+    public ResponseEntity
+                <Optional<UserDTO>> getUser(@RequestBody User user) {
         String email = user.getEmail();
-        String enteredPassword = user.getPassword(); // Password entered by the user
 
         // Retrieve the user's hashed password from the database using the email
-        User retrievedUser = userService.getUserByEmail(email).orElse(null);
-
-        List<Map<String, Object>>  info = new ArrayList<>();
+       Optional<User> retrievedUser = userService.getUserByEmail(email);
+        Optional<UserDTO> retrievedUserDTO = Optional.of(new UserDTO());
+        retrievedUserDTO.orElseThrow().firstName = retrievedUser.orElseThrow().getFirstName();
+        retrievedUserDTO.orElseThrow().lastName = retrievedUser.orElseThrow().getLastName();
+        retrievedUserDTO.orElseThrow().email = retrievedUser.orElseThrow().getEmail();
+        retrievedUserDTO.orElseThrow().itemIds = retrievedUser.orElseThrow().getItemIds();
+        List<List<Object>>  info = new ArrayList<>();
         //how can I add value pairs to this list?
-        Map<String, Object> body = new HashMap<>();
-        body.put("email", retrievedUser.getEmail());
-        body.put("firstName",retrievedUser.getFirstName());
-        body.put("lastName", retrievedUser.getLastName());
-        body.put("userId", retrievedUser.getId());
-        body.put("items", retrievedUser.getItemIds());
+        List<Object> body = new ArrayList<>();
+        body.add(retrievedUser);
         info.add(body);
-        if (retrievedUser != null) {
-            return new ResponseEntity<>(info, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(retrievedUserDTO, HttpStatus.OK);
         }
-    }
 
     @PostMapping("/login")
     public ResponseEntity<List<Map<String, Object>>>loginUser(@RequestBody User user) {
@@ -75,20 +72,17 @@ public class UserController {
         String enteredPassword = user.getPassword(); // Password entered by the user
 
         // Retrieve the user's hashed password from the database using the email
-        User retrievedUser = userService.getUserByEmail(email).orElse(null);
+        Optional<User> retrievedUser = userService.getUserByEmail(email);
 
         List<Map<String, Object>>  info = new ArrayList<>();
         //how can I add value pairs to this list?
         Map<String, Object> body = new HashMap<>();
-        body.put("email", retrievedUser.getEmail());
-        body.put("firstName",retrievedUser.getFirstName());
-        body.put("lastName", retrievedUser.getLastName());
-        body.put("userId", retrievedUser.getId());
-        body.put("items", retrievedUser.getItemIds());
+        body.put("user", retrievedUser);
+
         info.add(body);
 
-        if (retrievedUser != null) {
-            String storedHashedPassword = retrievedUser.getPassword();
+        if (retrievedUser.isPresent()) {
+            String storedHashedPassword = retrievedUser.orElseThrow().getPassword();
 
             // Compare the plain password entered by the user with the stored hashed password
             if (BCrypt.checkpw(enteredPassword, storedHashedPassword)) {
