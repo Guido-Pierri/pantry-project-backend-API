@@ -16,7 +16,7 @@ public class UserService {
         return userRepository.getUserByEmailAndPassword(email,password);
     }
     public Optional<User> getUserByEmail(String email){
-        return userRepository.getUserByEmail(email);
+        return Optional.of(userRepository.getUserByEmail(email).orElseThrow());
     }
     public User createUser(String firstName, String lastName, String email, String password){
         return userRepository.save(new User(firstName,lastName,email,password));
