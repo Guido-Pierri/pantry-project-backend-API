@@ -46,10 +46,9 @@ public class UserController {
         }
     }
     */
-        @GetMapping("/getUser")
+        @GetMapping("/user/{email}")
     public ResponseEntity
-                <Optional<UserDTO>> getUser(@RequestBody User user) {
-        String email = user.getEmail(); // Assuming your User class has a getEmail() method
+                <Optional<UserDTO>> getUser(@PathVariable String email) {
         // Retrieve the user's hashed password from the database using the email
        Optional<User> retrievedUser = userService.getUserByEmail(email);
         Optional<UserDTO> retrievedUserDTO = Optional.of(new UserDTO());
@@ -65,7 +64,7 @@ public class UserController {
             return new ResponseEntity<>(retrievedUserDTO, HttpStatus.OK);
         }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<Optional<UserDTO>>loginUser(@RequestBody User user) {
         String email = user.getEmail();
         String enteredPassword = user.getPassword(); // Password entered by the user
