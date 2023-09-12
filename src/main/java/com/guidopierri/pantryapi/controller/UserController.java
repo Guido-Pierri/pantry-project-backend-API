@@ -46,7 +46,7 @@ public class UserController {
         }
     }
     */
-        @PostMapping("/getUser")
+        @GetMapping("/getUser")
     public ResponseEntity
                 <Optional<UserDTO>> getUser(@RequestBody User user) {
         String email = user.getEmail(); // Assuming your User class has a getEmail() method
@@ -65,7 +65,7 @@ public class UserController {
             return new ResponseEntity<>(retrievedUserDTO, HttpStatus.OK);
         }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<Optional<UserDTO>>loginUser(@RequestBody User user) {
         String email = user.getEmail();
         String enteredPassword = user.getPassword(); // Password entered by the user
