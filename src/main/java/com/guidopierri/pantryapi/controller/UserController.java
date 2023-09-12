@@ -26,11 +26,18 @@ public class UserController {
     //}
       @PostMapping("/create") // Use POST method to create a new user
       public ResponseEntity<User> createUser(@RequestBody User user) {
-          // Logic to create a new user using the provided user object
           String firstName = user.getFirstName();
           String lastName = user.getLastName();
           String email = user.getEmail();
           String password = user.getPassword();
+
+          Optional<User> retrievedUser = userService.getUserByEmail(email);
+          if (retrievedUser.isPresent()){
+              return new ResponseEntity<>(HttpStatus.CONFLICT);
+          }
+
+          // Logic to create a new user using the provided user object
+
           User createdUser = userService.createUser(firstName, lastName, email, password);
           return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
       }
