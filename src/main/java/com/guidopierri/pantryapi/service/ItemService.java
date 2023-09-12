@@ -20,11 +20,11 @@ public class ItemService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public Item createItem(String userId, String name, String quantity, String expirationDate) {
-        Item item = repository.insert(new Item(userId, name, quantity, expirationDate));
+    public Item createItem(String userEmail, String name, String quantity, String expirationDate) {
+        Item item = repository.insert(new Item(userEmail, name, quantity, expirationDate));
 
         mongoTemplate.update(User.class)
-                .matching(Criteria.where("id").is(userId))
+                .matching(Criteria.where("email").is(userEmail))
                 .apply(new Update().push("itemIds").value(item))
                 .first();
 

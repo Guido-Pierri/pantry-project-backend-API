@@ -21,7 +21,7 @@ public class ItemController {
     @PostMapping()
     public ResponseEntity<Item> createItem(@RequestBody Map<String, String> payload) {
 
-        return new ResponseEntity<Item>(service.createItem(payload.get("userId"), payload.get("name"), payload.get("quantity"), payload.get("expirationDate")), HttpStatus.CREATED);
+        return new ResponseEntity<Item>(service.createItem(payload.get("userEmail"), payload.get("name"), payload.get("quantity"), payload.get("expirationDate")), HttpStatus.CREATED);
     }
 
 }
