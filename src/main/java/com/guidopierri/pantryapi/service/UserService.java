@@ -1,6 +1,7 @@
 package com.guidopierri.pantryapi.service;
 
 import com.guidopierri.pantryapi.model.User;
+import com.guidopierri.pantryapi.model.UserDTO;
 import com.guidopierri.pantryapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,12 @@ public class UserService {
     public Optional<User> getUserByEmail(String email){
         return Optional.of(userRepository.getUserByEmail(email).orElseThrow());
     }
-    public User createUser(String firstName, String lastName, String email, String password){
-        return userRepository.save(new User(firstName,lastName,email,password));
+    public UserDTO createUser(String firstName, String lastName, String email){
+        UserDTO user = new UserDTO();
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.email = email;
+        return userRepository.save(user);
 
     }
 }

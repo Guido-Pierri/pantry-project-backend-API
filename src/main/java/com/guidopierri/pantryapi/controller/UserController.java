@@ -25,7 +25,7 @@ public class UserController {
       //  return new ResponseEntity<Optional<User>>(userService.getUser(email), HttpStatus.OK);
     //}
       @PostMapping("/create") // Use POST method to create a new user
-      public ResponseEntity<User> createUser(@RequestBody User user) {
+      public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
           String firstName = user.getFirstName();
           String lastName = user.getLastName();
           String email = user.getEmail();
@@ -38,7 +38,7 @@ public class UserController {
 
           // Logic to create a new user using the provided user object
 
-          User createdUser = userService.createUser(firstName, lastName, email, password);
+          UserDTO createdUser = userService.createUser(firstName, lastName, email);
           return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
       }
     /*@PostMapping("/getUser")
