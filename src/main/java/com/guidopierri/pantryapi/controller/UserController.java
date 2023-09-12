@@ -29,30 +29,22 @@ public class UserController {
           String firstName = user.getFirstName();
           String lastName = user.getLastName();
           String email = user.getEmail();
-          String password = user.getPassword();
-
           Optional<User> retrievedUser = userService.getUserByEmail(email);
           if (retrievedUser.isPresent()){
               return new ResponseEntity<>(HttpStatus.CONFLICT);
-          }
+          }else{
 
           // Logic to create a new user using the provided user object
 
-          UserDTO createdUser = userService.createUser(firstName, lastName, email);
-          return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-      }
-    /*@PostMapping("/getUser")
-    public ResponseEntity<User> retrieveUser(@RequestBody User user) {
-        String email = user.getEmail(); // Assuming your User class has a getEmail() method
-        User retrievedUser = userService.getUserByEmail(email).orElse(null);
+          User createdUser = userService.createUser(firstName, lastName, email);
+          UserDTO createdUserDTO = new UserDTO();
+            createdUserDTO.firstName = createdUser.getFirstName();
+            createdUserDTO.lastName = createdUser.getLastName();
+            createdUserDTO.email = createdUser.getEmail();
+            createdUserDTO.itemIds = createdUser.getItemIds();
+          return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
+      }}
 
-        if (retrievedUser != null) {
-            return new ResponseEntity<>(retrievedUser, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    */
         @GetMapping("/user/{email}")
     public ResponseEntity
                 <Optional<UserDTO>> getUser(@PathVariable String email) {
