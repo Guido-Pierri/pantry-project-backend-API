@@ -6,5 +6,5 @@ public class UserDTO {
     public String firstName;
     public String lastName;
     public String email;
-    public List<Item> itemIds;
+    public List<ItemDTO> itemIds;
 }

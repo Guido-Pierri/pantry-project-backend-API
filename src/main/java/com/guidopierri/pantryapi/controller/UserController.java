@@ -1,15 +1,18 @@
 package com.guidopierri.pantryapi.controller;
 
 import com.guidopierri.pantryapi.model.Item;
+import com.guidopierri.pantryapi.model.ItemDTO;
 import com.guidopierri.pantryapi.model.User;
 import com.guidopierri.pantryapi.model.UserDTO;
 import com.guidopierri.pantryapi.service.UserService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.nio.ByteBuffer;
 import java.util.*;
 
 @RestController
@@ -41,27 +44,53 @@ public class UserController {
             createdUserDTO.firstName = createdUser.getFirstName();
             createdUserDTO.lastName = createdUser.getLastName();
             createdUserDTO.email = createdUser.getEmail();
-            createdUserDTO.itemIds = createdUser.getItemIds();
+            //createdUserDTO.itemIds = createdUser.getItemIds();
+
+              // Create UUID-like strings for itemIds
+             /* List<ItemDTO> itemIds = new ArrayList<>();
+              for (Item item : user.getItemIds()) {
+                  ItemDTO itemDTO = new ItemDTO();
+                  itemDTO.id = item.getId().toString();
+                  itemDTO.name = item.getName();
+                  itemDTO.quantity = item.getQuantity();
+                  itemDTO.expirationDate = item.getExpirationDate();
+                  itemDTO.userEmail = item.getUserEmail();
+                  itemIds.add(itemDTO);            }
+
+              createdUserDTO.itemIds = itemIds;*/
           return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
       }}
 
-        @GetMapping("/user/{email}")
-    public ResponseEntity
-                <Optional<UserDTO>> getUser(@PathVariable String email) {
+    @GetMapping("/user/{email}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable String email) {
         // Retrieve the user's hashed password from the database using the email
-       Optional<User> retrievedUser = userService.getUserByEmail(email);
-        Optional<UserDTO> retrievedUserDTO = Optional.of(new UserDTO());
-        retrievedUserDTO.orElseThrow().firstName = retrievedUser.orElseThrow().getFirstName();
-        retrievedUserDTO.orElseThrow().lastName = retrievedUser.orElseThrow().getLastName();
-        retrievedUserDTO.orElseThrow().email = retrievedUser.orElseThrow().getEmail();
-        retrievedUserDTO.orElseThrow().itemIds = retrievedUser.orElseThrow().getItemIds();
-        List<List<Object>>  info = new ArrayList<>();
-        //how can I add value pairs to this list?
-        List<Object> body = new ArrayList<>();
-        body.add(retrievedUser);
-        info.add(body);
-            return new ResponseEntity<>(retrievedUserDTO, HttpStatus.OK);
+        Optional<User> retrievedUser = userService.getUserByEmail(email);
+
+        if (retrievedUser.isPresent()) {
+            User user = retrievedUser.get();
+            UserDTO userDTO = new UserDTO();
+            userDTO.firstName = (user.getFirstName());
+            userDTO.lastName = user.getLastName();
+            userDTO.email= user.getEmail();
+            //userDTO.itemIds = (user.getItemIds());
+
+            // Create UUID-like strings for itemIds
+            List<ItemDTO> itemIds = new ArrayList<>();
+            for (Item item : user.getItemIds()) {
+                ItemDTO itemDTO = new ItemDTO();
+                itemDTO.id = item.getId().toString();
+                itemDTO.name = item.getName();
+                itemDTO.quantity = item.getQuantity();
+                itemDTO.expirationDate = item.getExpirationDate();
+                itemDTO.userEmail = item.getUserEmail();
+                itemIds.add(itemDTO);            }
+
+            userDTO.itemIds = itemIds;
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<Optional<UserDTO>>loginUser(@RequestBody User user) {
@@ -74,7 +103,7 @@ public class UserController {
         retrievedUserDTO.orElseThrow().firstName = retrievedUser.orElseThrow().getFirstName();
         retrievedUserDTO.orElseThrow().lastName = retrievedUser.orElseThrow().getLastName();
         retrievedUserDTO.orElseThrow().email = retrievedUser.orElseThrow().getEmail();
-        retrievedUserDTO.orElseThrow().itemIds = retrievedUser.orElseThrow().getItemIds();
+        //retrievedUserDTO.orElseThrow().itemIds = retrievedUser.orElseThrow().getItemIds();
 
         String storedHashedPassword = retrievedUser.orElseThrow().getPassword();
 
@@ -87,7 +116,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
 }
 
 

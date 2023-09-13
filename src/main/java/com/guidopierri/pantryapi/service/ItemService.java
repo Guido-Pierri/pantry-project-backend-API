@@ -30,5 +30,7 @@ public class ItemService {
 
         return item;
     }
-
+    public Item getItem(String id){
+        return repository.findById(new ObjectId(id)).orElseThrow();
+    }
 }

@@ -25,4 +25,24 @@ public class Item {
         this.quantity = quantity;
         this.expirationDate = expirationDate;
     }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
 }

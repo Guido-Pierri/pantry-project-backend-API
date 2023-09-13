@@ -23,5 +23,9 @@ public class ItemController {
 
         return new ResponseEntity<Item>(service.createItem(payload.get("userEmail"), payload.get("name"), payload.get("quantity"), payload.get("expirationDate")), HttpStatus.CREATED);
     }
+    @GetMapping("/item/{id}")
+    public ResponseEntity<Item> getItem(@PathVariable String id) {
 
+        return new ResponseEntity<Item>(service.getItem(id), HttpStatus.OK);
+    }
 }
