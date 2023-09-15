@@ -17,13 +17,19 @@ public class Item {
     private String userEmail;
     private String name;
     private String quantity;
-    private String expirationDate;
+    private String expiryDate;
+    private String GTIN;
+    private String brand;
+    private String image;
 
-    public Item(String userEmail, String name, String quantity, String expirationDate) {
+    public Item(String userEmail, String name, String quantity, String expiryDate, String GTIN, String brand, String image) {
         this.userEmail = userEmail;
         this.name = name;
         this.quantity = quantity;
-        this.expirationDate = expirationDate;
+        this.expiryDate = expiryDate;
+        this.GTIN = GTIN;
+        this.brand = brand;
+        this.image = image;
     }
 
     public ObjectId getId() {
@@ -43,6 +49,18 @@ public class Item {
     }
 
     public String getExpirationDate() {
-        return expirationDate;
+        return expiryDate;
+    }
+
+    public String getGTIN() {
+        return GTIN;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

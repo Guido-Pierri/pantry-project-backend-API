@@ -5,14 +5,12 @@ import com.guidopierri.pantryapi.model.ItemDTO;
 import com.guidopierri.pantryapi.model.User;
 import com.guidopierri.pantryapi.model.UserDTO;
 import com.guidopierri.pantryapi.service.UserService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.nio.ByteBuffer;
 import java.util.*;
 
 @RestController
@@ -81,8 +79,11 @@ public class UserController {
                 itemDTO.id = item.getId().toString();
                 itemDTO.name = item.getName();
                 itemDTO.quantity = item.getQuantity();
-                itemDTO.expirationDate = item.getExpirationDate();
+                itemDTO.expiryDate = item.getExpirationDate();
                 itemDTO.userEmail = item.getUserEmail();
+                itemDTO.GTIN = item.getGTIN();
+                itemDTO.brand = item.getBrand();
+                itemDTO.image = item.getImage();
                 itemIds.add(itemDTO);            }
 
             userDTO.itemIds = itemIds;

@@ -1,5 +1,6 @@
 package com.guidopierri.pantryapi.controller;
 
+import com.guidopierri.pantryapi.model.GtinItem;
 import com.guidopierri.pantryapi.model.Item;
 import com.guidopierri.pantryapi.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,15 @@ public class ItemController {
     @Autowired
     private ItemService service;
 
-    @PostMapping()
-    public ResponseEntity<Item> createItem(@RequestBody Map<String, String> payload) {
+    @PostMapping({"/create"})
+    public ResponseEntity<Item> createGtinItem(@RequestBody Map<String, String> payload) {
 
-        return new ResponseEntity<Item>(service.createItem(payload.get("userEmail"), payload.get("name"), payload.get("quantity"), payload.get("expirationDate")), HttpStatus.CREATED);
+        return new ResponseEntity<Item>(service.createItem(payload.get("userEmail"), payload.get("name"), payload.get("quantity"), payload.get("expiryDate"), payload.get("brand"), payload.get("image"),payload.get("GTIN")), HttpStatus.CREATED);
+    }
+    @PostMapping()
+    public ResponseEntity<Item> createCustomItem(@RequestBody Map<String, String> payload) {
+
+        return new ResponseEntity<Item>(service.createItem(payload.get("userEmail"), payload.get("name"), payload.get("quantity"), payload.get("expiryDate"),payload.get("GTIN"),payload.get("brand"),payload.get("image")), HttpStatus.CREATED);
     }
     @GetMapping("/item/{id}")
     public ResponseEntity<Item> getItem(@PathVariable String id) {
