@@ -13,5 +13,5 @@ phases:
       - echo Build completed
 artifacts:
   files:
-    - target/stengameserver-0.0.1-SNAPSHOT.jar
+    - target/pantry-api-0.0.1-SNAPSHOT.jar
   discard-paths: yes
